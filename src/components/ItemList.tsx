@@ -1,9 +1,7 @@
 import React from 'react';
-import {connect, useDispatch} from 'react-redux';
 import {baseUrl} from "../constants/api";
 import axios from "axios";
 import {useAppDispatch} from "../store";
-import {Item, ItemGet} from "../store/slices/itemSlice";
 
 
 export const ItemList = () => {
@@ -27,7 +25,6 @@ export const ItemList = () => {
     console.log(item)
     React.useEffect(() => {
         setLoading(true)
-        // dispatch(ItemGet())
         if (item !== undefined) {
             axios.get(`${baseUrl}`).then((res) => {
                 const mappedData = res.data
@@ -40,7 +37,6 @@ export const ItemList = () => {
                                     parent.children = [...(parent.children || []), item];
                                 }
                             }
-
                             return result;
                         },
                         [...res.data]
@@ -52,7 +48,6 @@ export const ItemList = () => {
         setTimeout(() => setLoading(false), 1500)
 
     }, [])
-
         return (
             <ul>
                 {item?.map((item:any,index:number) => (
