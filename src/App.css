@@ -1,12 +1,11 @@
-li {
-    background: #fc0;
-    border: 3px solid #fff;
-    border-radius: 10px;
-    text-align: center;
-    width: 130px;
-    list-style: none;
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-li:hover {
-    outline: 2px solid #000;
+li {
+    list-style: none;
+    color: red;
+    font-weight: bold;
 }

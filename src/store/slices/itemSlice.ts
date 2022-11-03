@@ -1,36 +1,23 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from "axios";
-import {baseUrl} from "../../constants/api";
+import {createSlice} from '@reduxjs/toolkit';
+import {itemGet} from "../thunks/itemThunk";
 
+export interface ListItem {
+    id: number;
+    label: string;
+    parent_id: number;
+    children?: ListItem[];
+}
 
 export interface ItemState {
     loading: boolean,
     error: any,
-    items: []
+    data: null | ListItem[],
 }
-
-export interface Item {
-    id: number
-    label :string
-    parent_id: number
-    children?: Item[]
-}
-
-export const ItemGet = createAsyncThunk (
-    'item/get',
-    async ( _,thunkAPI) => {
-        try {
-            return await axios.get(`${baseUrl}`);
-        } catch (error) {
-            return thunkAPI.rejectWithValue({error: error});
-        }
-    }
-)
 
 const initialState: ItemState = {
     loading: false,
     error: null,
-    items:[]
+    data: null,
 }
 
 export const itemSlice = createSlice({
@@ -39,17 +26,17 @@ export const itemSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(
-            ItemGet.pending, (state) => {
+            itemGet.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             });
         builder.addCase(
-            ItemGet.fulfilled, (state, {payload}:any) => {
-                state.items = payload.data
+            itemGet.fulfilled, (state, {payload}:any) => {
+                state.data = payload
                 state.loading = false;
             });
         builder.addCase(
-            ItemGet.rejected, (state, action) => {
+            itemGet.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error;
             });

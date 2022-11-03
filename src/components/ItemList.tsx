@@ -1,58 +1,32 @@
 import React from 'react';
-import {baseUrl} from "../constants/api";
-import axios from "axios";
-import {useAppDispatch} from "../store";
+import {RootState, useAppDispatch} from "../store";
+import {ListItem} from "../store/slices/itemSlice";
+import {itemGet} from "../store/thunks/itemThunk";
+import {useSelector} from "react-redux";
 
+
+const getList = (data: ListItem[]) => {
+    return (
+        <ul>
+            {data.map((item) => (
+                <li key={item.id}>
+                    {item.label}
+                    {item.children ? getList(item.children) : null}
+                </li>
+            ))}
+        </ul>
+    );
+};
 
 export const ItemList = () => {
-
-    const renderItem = (item:any) => {
-        if (item.children) {
-            return (
-                <ul key={item.id}>
-                    <li key={item.id}>{item.label}</li>
-                    {item.children.map((childItem:any) => renderItem(childItem))}
-                </ul>
-            );
-        }
-
-        return <li key={item.id}>
-            {item.label}</li>
-    };
     const dispatch = useAppDispatch();
-    const [item, setItem] = React.useState<any>(null)
-    const [loading, setLoading] = React.useState<boolean>(false)
-    console.log(item)
+    const data = useSelector((state:RootState)=> state.itemListReducer.data);
     React.useEffect(() => {
-        setLoading(true)
-        if (item !== undefined) {
-            axios.get(`${baseUrl}`).then((res) => {
-                const mappedData = res.data
-                    .reduce(
-                        (result:any, item:any, index:number) => {
-                            if (item.parent_id) {
-                                const parent = result.find((parent:any) => parent.id === item.parent_id);
-
-                                if (parent) {
-                                    parent.children = [...(parent.children || []), item];
-                                }
-                            }
-                            return result;
-                        },
-                        [...res.data]
-                    )
-                    .filter((item:any) => !item.parent_id);
-                setItem(mappedData)
-            })
-        }
-        setTimeout(() => setLoading(false), 1500)
-
-    }, [])
-        return (
-            <ul>
-                {item?.map((item:any,index:number) => (
-                    renderItem(item)
-                    ))}
-            </ul>
-        );
+        dispatch(itemGet())
+    }, []);
+      if(!data) {
+          return <p>loading...</p>
+      }
+     const list = getList(data)
+        return list
 }

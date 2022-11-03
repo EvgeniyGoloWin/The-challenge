@@ -1,11 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import itemReducer from "./slices/itemSlice";
+import itemListReducer from "./slices/itemSlice";
 
 
 export const store = configureStore({
     reducer: {
-        item: itemReducer,
+        itemListReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,
