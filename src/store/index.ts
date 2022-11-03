@@ -2,7 +2,6 @@ import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import itemListReducer from "./slices/itemSlice";
 
-
 export const store = configureStore({
     reducer: {
         itemListReducer

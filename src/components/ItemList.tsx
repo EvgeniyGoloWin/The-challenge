@@ -4,7 +4,6 @@ import {ListItem} from "../store/slices/itemSlice";
 import {itemGet} from "../store/thunks/itemThunk";
 import {useSelector} from "react-redux";
 
-
 const getList = (data: ListItem[]) => {
     return (
         <ul>

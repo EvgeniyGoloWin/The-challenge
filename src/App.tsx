@@ -1,8 +1,7 @@
 import React from 'react';
 import  {ItemList} from "./components/ItemList";
 
-import './App.css';
-
+import './App.scss';
 
 function App() {
   return (
